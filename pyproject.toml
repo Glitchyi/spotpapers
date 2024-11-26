@@ -5,14 +5,15 @@ description = "Simple CLI tool to get windows spotlight wallpapers"
 authors = [
     { name="Glitchy", email="advaith@glitchy.systems" }
 ]
+readme = "README.md"
 
 dependencies = [
-    "click","groq"
+    "click","groq","build"
 ]
 
 [project.optional-dependencies]
 dev = [
-    "ruff"
+    "ruff","twine"
 ]
 
 [build-system]
