@@ -1,0 +1,23 @@
+[project]
+name = "spotpapers"
+dynamic = ["version"]
+description = "Simple CLI tool to get windows spotlight wallpapers"
+authors = [
+    { name="Glitchy", email="advaith@glitchy.systems" }
+]
+
+dependencies = [
+    "click","groq"
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff"
+]
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+spotpapers = "spotpapers.main:main"
