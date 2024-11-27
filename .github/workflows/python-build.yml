@@ -36,12 +36,11 @@ jobs:
   publish-to-pypi:
     name: >-
         Publish Python 🐍 distribution 📦 to PyPI
-    if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
     needs:
     - build
     runs-on: ubuntu-latest
     environment:
-        name: pypi
+        name: release
         url: https://pypi.org/p/spotpapers  # Replace <package-name> with your PyPI project name
     permissions:
         id-token: write  # IMPORTANT: mandatory for trusted publishing
@@ -77,14 +76,19 @@ jobs:
             ./dist/*.tar.gz
             ./dist/*.whl
 
+      - name: Get Package Version
+        run: |
+          echo "PKG_VERSION=$(grep -m 1 'version = ' pyproject.toml | cut -d'"' -f2)" >> $GITHUB_ENV
+
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           gh release create
-          '${{ github.ref_name }}'
+          "v${PKG_VERSION}"
           --repo '${{ github.repository }}'
-          --notes ""
+          --title "Release v${PKG_VERSION}"
+          --generate-notes
 
       - name: Upload artifact signatures to GitHub Release
         env:
