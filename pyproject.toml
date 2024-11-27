@@ -8,12 +8,11 @@ authors = [
 readme = "README.md"
 
 dependencies = [
-    "click","groq","build"
+    "click","groq"
 ]
-
 [project.optional-dependencies]
 dev = [
-    "ruff","twine"
+    "ruff","build"
 ]
 
 [build-system]
