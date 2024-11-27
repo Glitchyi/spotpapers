@@ -1,15 +1,21 @@
 [project]
 name = "spotpapers"
-dynamic = ["version"]
-description = "Simple CLI tool to get windows spotlight wallpapers"
+version = "0.0.1"
+description = "Simple CLI tool to get Windows spotlight wallpapers."
+requires-python = ">= 3.8"
+readme = "README.md"
+license = { file = "LICENSE" }
 authors = [
     { name="Glitchy", email="advaith@glitchy.systems" }
 ]
-readme = "README.md"
-
 dependencies = [
     "click","groq"
 ]
+classifiers = [
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3"
+]
+
 [project.optional-dependencies]
 dev = [
     "ruff","build"
