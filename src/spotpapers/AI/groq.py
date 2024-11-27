@@ -1,5 +1,6 @@
 from groq import Groq
 from base64 import b64encode
+from os import environ
 
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
@@ -12,7 +13,7 @@ def image_name_suggestion(image_name):
     # Getting the base64 string
     base64_image = encode_image(image_path)
 
-    client = Groq(api_key="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")
+    client = Groq(api_key=environ.get("GROQ_API_KEY"))
 
     prompt = '''Analyze this image and perform the following tasks:
     1. Identify the main subject, style, and key visual elements
