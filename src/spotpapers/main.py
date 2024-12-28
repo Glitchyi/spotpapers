@@ -1,6 +1,6 @@
 from spotpapers.AI.groq import image_name_suggestion
 from os import listdir, mkdir, environ, path
-from shutil import move
+from shutil import copy
 from json import loads
 import click
 
@@ -18,7 +18,7 @@ def validate_air(ctx, param, value):
         return environ.get("GROQ_API_KEY")
     return value
 
-@click.command()
+@click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option(
     '--air',
     default=None,
@@ -30,7 +30,6 @@ def validate_air(ctx, param, value):
 )
 def main(air):
     "Simple program that helps extract windows spotlight wallpapers"
-    
     if air == NIL:
         if environ.get("GROQ_API_KEY") is None:
             click.echo(
@@ -39,13 +38,14 @@ def main(air):
             return
         else:
             air = environ.get("GROQ_API_KEY")
-    
-    if air is not None and "gsk_r" not in air:
+    if air is not None and "gsk_" not in air:
             click.echo(
-                "Enter a valid API key. Provide it using --air or set it as the 'GROQ_API_KEY' environment variable."
+                " Enter a valid API key. Provide it using --air or set it as the 'GROQ_API_KEY' environment variable."
             )
             return
     
+    environ["GROQ_API_KEY"] = air
+        
     wallpaperlist = listdir(path=PATH)
     print("doing shit")
     for i in wallpaperlist:
@@ -55,8 +55,11 @@ def main(air):
             response_json = loads(response)
             IMAGENAME = response_json.get("name", "No name found")
         NEWPATH = rf"{USERPATH}\Pictures\Spotlight Wallpapers\{IMAGENAME}.jpeg"
-        move(rf"{PATH}\{i}", NEWPATH)
-        print(IMAGENAME)
+        
+        file_path = rf"{PATH}\{i}"
+        if path.getsize(file_path) > 20480:  # Check if file size is more than 20KB (20 * 1024 bytes)
+            copy(file_path, NEWPATH)
+            print(IMAGENAME)
 
 if __name__ == "__main__":
     main()
